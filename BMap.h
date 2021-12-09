@@ -16,18 +16,10 @@ private:
     double m_wmAp;          /// <-  Ширина источникового  прямоугольника
     double m_hmAp;          /// <-  Высота источникового  прямоугольника
     COLORREF m_bcolor;      /// <-  Цвет, который будет считаться прозрачным
-    int field[10][21] = {{14, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 15},
-                        {  8,  9, 11, 11,  9,  9, 11,  9, 10,  9, 11, 11, 10,  9,  9,  9, 11, 11, 10,  9, 13},
-                        {  6,  1,  0,  2,  0,  0,  1,  0,  0,  2,  0,  1,  0,  0,  1,  0,  0,  2,  0,  1,  7},
-                        {  6,  0,  1,  0,  0,  2,  0,  1,  0,  0,  1,  0,  0,  2,  0,  1,  0,  0,  2,  0,  7},
-                        {  6,  2,  0,  2,  0,  0,  1,  0,  0,  2,  0,  1,  0,  0,  1,  0,  0,  2,  0,  1,  7},
-                        {  6,  0,  1,  0,  0,  2,  0,  1,  0,  0,  1,  0,  0,  2,  0,  1,  0,  0,  1,  0,  7},
-                        {  6,  1,  0,  2,  0,  0,  1,  0,  0,  2,  0,  1,  0,  0,  1,  0,  0,  2,  0,  1,  7},
-                        {  6,  0,  1,  0,  0,  2,  0,  1,  0,  0,  1,  0,  0,  2,  0,  1,  0,  0,  2,  0,  7},
-                        {  6,  2,  0,  2,  0,  0,  1,  0,  0,  2,  0,  1,  0,  0,  1,  0,  0,  2,  0,  1,  7},
-                        {  3,  5,  5,  5,  5,  5,  5,  5,  5,  5,  5,  5,  5,  5,  5,  5,  5,  5,  5,  5,  4}};
+    int field[10][21];
 
 public:
+
     Karta() : mAp(txLoadImage("BMap.bmp")), m_d(txDC()), m_xD(64), m_yD(64), m_w(64), m_h(64),
         m_xmAp(32), m_ymAp(0), m_wmAp(32), m_hmAp(32), m_bcolor(RGB(47, 47, 4))
         {
@@ -36,6 +28,11 @@ public:
                 exit(0);
             }
         }
+
+    ~Karta(){
+        txDeleteDC(mAp);
+    }
+
     void draw(){
         for(int i=0; i<10; i++){
             for(int j=0; j<21; j++){
@@ -43,16 +40,21 @@ public:
             }
         }
     }
+
     inline int get_cell(int y, int x){
         y = int(y/m_yD); //80
         x = int(x/m_xD); //48
         return field[y][x];
     }
-    void set_cell(int y, int x, int type){
+
+    inline void set_cell(int y, int x, int type){
         field[y][x] = type;
     }
-    ~Karta(){
-        txDeleteDC(mAp);
+
+    inline void pers_set_cell(int y, int x, int type){
+        y = int(y/m_yD);
+        x = int(x/m_xD);
+        field[y][x] = type;
     }
 };
 #endif

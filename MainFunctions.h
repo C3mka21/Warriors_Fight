@@ -4,45 +4,111 @@
 #define __FUNCTIONS_H__
 
 void collision(Karta &mp, Warrior &wr);
-void attack(Karta &mp, Warrior &wr, Warrior &cr);
+int spikes_check(Karta &mp, Warrior &wr, Warrior &cr);
+int spikes_hurt(Karta &mp, Warrior &wr, Warrior &cr);
+int attack(Karta &mp, Warrior &wr, Warrior &cr);
 void attack_draw(Karta &mp, Warrior &wr, Warrior &cr);
 void attack_check(Karta &mp, Warrior &wr, Warrior &cr, int i);
 void death(Karta &mp, Warrior &wr, Warrior &cr);
+void game_over(Warrior &wr);
 
 void collision(Karta &mp, Warrior &wr){
-        if(mp.get_cell(int(wr.get_ycoord() + wr.get_height()/1.25), int(wr.get_xcoord() + wr.get_width()/3)) > 2){
-            wr.stop();
-            return;
+    if((mp.get_cell(int(wr.get_ycoord() + wr.get_height()/1.25), int(wr.get_xcoord() + wr.get_width()/3)) > 2) && (mp.get_cell(int(wr.get_ycoord() + wr.get_height()/1.25), int(wr.get_xcoord() + wr.get_width()/3)) < 16)){
+        wr.stop();
+        return;
+    }
+    if((mp.get_cell(int(wr.get_ycoord() + wr.get_height()/1.25), int(wr.get_xcoord() + wr.get_width() - wr.get_width()/3)) > 2) && (mp.get_cell(int(wr.get_ycoord() + wr.get_height()/1.25), int(wr.get_xcoord() + wr.get_width() - wr.get_width()/3)) < 16)){
+        wr.stop();
+        return;
+    }
+    if((mp.get_cell(int(wr.get_ycoord() + wr.get_height() - wr.get_height()/6), int(wr.get_xcoord() + wr.get_width() - wr.get_width()/3)) > 2) && (mp.get_cell(int(wr.get_ycoord() + wr.get_height() - wr.get_height()/6), int(wr.get_xcoord() + wr.get_width() - wr.get_width()/3)) < 16)){
+        wr.stop();
+        return;
+    }
+    if((mp.get_cell(int(wr.get_ycoord() + wr.get_height() - wr.get_height()/6), int(wr.get_xcoord() + wr.get_width()/3)) > 2) && (mp.get_cell(int(wr.get_ycoord() + wr.get_height() - wr.get_height()/6), int(wr.get_xcoord() + wr.get_width()/3)) < 16)){
+        wr.stop();
+        return;
+    }
+}
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+int spikes_check(Karta &mp, Warrior &wr, Warrior &cr){
+    int type1 = 18, type2 = 21, type1_1 = 17, type2_1 = 20;
+    if(((mp.get_cell(int(wr.get_ycoord() + wr.get_height() - wr.get_height()/6.5), int(wr.get_xcoord() + wr.get_width() - wr.get_width()/2)) == type1) || (mp.get_cell(int(wr.get_ycoord() + wr.get_height() - wr.get_height()/6.5), int(wr.get_xcoord() + wr.get_width() - wr.get_width()/2)) == type2)) && (wr.get_Sreload() >= wr.get_Sreload1())){
+        if(spikes_hurt(mp, wr, cr) == 1)
+            return 1;
+        return 0;
+    }
+    if(((mp.get_cell(int(wr.get_ycoord() + wr.get_height() - wr.get_height()/6.5), int(wr.get_xcoord() + wr.get_width()/2)) == type1) || (mp.get_cell(int(wr.get_ycoord() + wr.get_height() - wr.get_height()/6.5), int(wr.get_xcoord() + wr.get_width()/2)) == type2)) && (wr.get_Sreload() >= wr.get_Sreload1())){
+        if(spikes_hurt(mp, wr, cr) == 1)
+            return 1;
+        return 0;
+    }
+    if(mp.get_cell(int(wr.get_ycoord() + wr.get_height() - wr.get_height()/6.5), int(wr.get_xcoord() + wr.get_width() - wr.get_width()/2)) == type1_1){
+        mp.pers_set_cell(int(wr.get_ycoord() + wr.get_height() - wr.get_height()/6.5), int(wr.get_xcoord() + wr.get_width() - wr.get_width()/2), type1);
+    }
+    else if(mp.get_cell(int(wr.get_ycoord() + wr.get_height() - wr.get_height()/6.5), int(wr.get_xcoord() + wr.get_width() - wr.get_width()/2)) == type2_1){
+        mp.pers_set_cell(int(wr.get_ycoord() + wr.get_height() - wr.get_height()/6.5), int(wr.get_xcoord() + wr.get_width() - wr.get_width()/2), type2);
+    }
+    if(mp.get_cell(int(wr.get_ycoord() + wr.get_height() - wr.get_height()/6.5), int(wr.get_xcoord() + wr.get_width()/2)) == type1_1){
+        mp.pers_set_cell(int(wr.get_ycoord() + wr.get_height() - wr.get_height()/6.5), int(wr.get_xcoord() + wr.get_width() - wr.get_width()/2), type1);
+    }
+    else if(mp.get_cell(int(wr.get_ycoord() + wr.get_height() - wr.get_height()/6.5), int(wr.get_xcoord() + wr.get_width()/2)) == type2_1){
+        mp.pers_set_cell(int(wr.get_ycoord() + wr.get_height() - wr.get_height()/6.5), int(wr.get_xcoord() + wr.get_width() - wr.get_width()/2), type2);
+    }
+    wr.Sreload_changeP();
+    return 0;
+}
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+int spikes_hurt(Karta &mp, Warrior &wr, Warrior &cr){
+    for(int i=0; i<4; i++){
+        txClear();
+        mp.draw();
+        if(wr.get_ycoord() >= cr.get_ycoord()){
+            cr.run();
+            cr.move_warrior();
+            collision(mp, cr);
+            cr.draw(cr.get_naprav());
+            wr.hurt(i);
         }
-        if(mp.get_cell(int(wr.get_ycoord() + wr.get_height()/1.25), int(wr.get_xcoord() + wr.get_width() - wr.get_width()/3)) > 2){
-            wr.stop();
-            return;
+        else{
+            wr.hurt(i);
+            cr.run();
+            cr.move_warrior();
+            collision(mp, cr);
+            cr.draw(cr.get_naprav());
         }
-        if(mp.get_cell(int(wr.get_ycoord() + wr.get_height() - wr.get_height()/6), int(wr.get_xcoord() + wr.get_width() - wr.get_width()/3)) > 2){
-            wr.stop();
-            return;
-        }
-        if(mp.get_cell(int(wr.get_ycoord() + wr.get_height() - wr.get_height()/6), int(wr.get_xcoord() + wr.get_width()/3)) > 2){
-            wr.stop();
-            return;
-        }
+        txSleep(60);
+    }
+    wr.Sreload_changeAH();
+    wr.newhp();
+    if(wr.get_hp() <= 0){
+        death(mp, cr, wr);
+        return 1;
+    }
+    return 0;
 }
 
-void attack(Karta &mp, Warrior &wr, Warrior &cr){
+int attack(Karta &mp, Warrior &wr, Warrior &cr){
+    if(wr.get_reload() < wr.get_reload1())
+            wr.reload_changeP();
     if(GetAsyncKeyState(wr.get_attack1key()) && wr.get_reload() >= wr.get_reload1()){
         if(GetAsyncKeyState(wr.get_runkey())){
             attack_draw(mp, wr, cr);
+            cr.newhp();
+            if(cr.get_hp() <= 0){
+                death(mp, wr, cr);
+                return 1;
+            }
         }
-        if(cr.get_hp() <= 0){
-            death(mp, wr, cr);
-        }
-        cr.oldhp();
         attack_draw(mp, wr, cr);
+        cr.newhp();
         if(cr.get_hp() <= 0){
             death(mp, wr, cr);
+            return 1;
         }
-        cr.oldhp();
     }
+    return 0;
 }
 
 void attack_draw(Karta &mp, Warrior &wr, Warrior &cr){
@@ -69,29 +135,32 @@ void attack_draw(Karta &mp, Warrior &wr, Warrior &cr){
 void attack_check(Karta &mp, Warrior &wr, Warrior &cr, int i){
     if((wr.get_xAcoord() > cr.get_Xhitbox()) && (wr.get_xAcoord() - cr.get_Xhitbox() < cr.get_Whitbox()) && (i >= 2)){
         if((wr.get_yAcoord() > cr.get_Yhitbox()) && (wr.get_yAcoord() - cr.get_Yhitbox() < cr.get_Hhitbox())){
-            cr.hurt(i);
+            cr.hurt(i-2);
             return;
         }
         else if((wr.get_yAcoord() < cr.get_Yhitbox()) && (cr.get_Yhitbox() - wr.get_yAcoord() < wr.get_height())){
-            cr.hurt(i);
+            cr.hurt(i-2);
             return;
         }
     }
     else if((wr.get_xAcoord() < cr.get_Xhitbox()) && (cr.get_Xhitbox() - wr.get_xAcoord() < wr.get_width()) && (i>=2)){
         if((wr.get_yAcoord() > cr.get_Yhitbox()) && (wr.get_yAcoord() - cr.get_Yhitbox() < cr.get_Hhitbox())){
-            cr.hurt(i);
+            cr.hurt(i-2);
             return;
         }
         else if((wr.get_yAcoord() < cr.get_Yhitbox()) && (cr.get_Yhitbox() - wr.get_yAcoord() < wr.get_height())){
-            cr.hurt(i);
+            cr.hurt(i-2);
             return;
         }
     }
+    cr.run();
+    cr.move_warrior();
     collision(mp, cr);
-    cr.draw(cr.move_warrior());
+    cr.draw(cr.get_naprav());
 }
 
 void death(Karta &mp, Warrior &wr, Warrior &cr){
+     cr.deathP();
      for(int i=0; i<5; i++){
         txClear();
         mp.draw();
@@ -103,7 +172,22 @@ void death(Karta &mp, Warrior &wr, Warrior &cr){
             wr.draw(wr.get_naprav());
             cr.warrior_death(i);
         }
-        txSleep(60);
+        txSleep(80);
     }
+}
+
+void game_over(Warrior &wr){
+    wr.set_xcoord(624);
+    wr.set_ycoord(272);
+    for(int i=0; i<5; i++){
+    //int i = 4;
+        txClear();
+        txSetColor(RGB(47, 47, 46));
+        txSetFillColor(RGB(47, 47, 46));
+        txRectangle(0, 0, 1344, 640);
+        wr.warrior_death(i);
+        txSleep(90);
+    }
+    txSleep(3500);
 }
 #endif
