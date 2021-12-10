@@ -11,7 +11,7 @@ int main(){
     txCreateWindow(1344, 640);
     txClear();
     Karta mp;
-    Warrior wr(txLoadImage("WRW.bmp"), txLoadImage("WLW.bmp"), txLoadImage("WUpW.bmp"), txLoadImage("WDW.bmp"), txLoadImage("WRA01.bmp"), txLoadImage("WLA01.bmp"), txLoadImage("WUpA01.bmp"), txLoadImage("WDA01.bmp"), txLoadImage("WRH.bmp"), txLoadImage("WLH.bmp"), txLoadImage("WUpH.bmp"), txLoadImage("WDH.bmp"), txLoadImage("WDD.bmp"), 300, 300, 96, 96, 'D', 'A', 'W', 'S', VK_SHIFT, VK_SPACE);
+    Warrior wr(txLoadImage("WRW.bmp"), txLoadImage("WLW.bmp"), txLoadImage("WUpW.bmp"), txLoadImage("WDW.bmp"), txLoadImage("WRA01.bmp"), txLoadImage("WLA01.bmp"), txLoadImage("WUpA01.bmp"), txLoadImage("WDA01.bmp"), txLoadImage("WRH.bmp"), txLoadImage("WLH.bmp"), txLoadImage("WUpH.bmp"), txLoadImage("WDH.bmp"), txLoadImage("WDD.bmp"), 300, 300, 96, 96, 'D', 'A', 'W', 'S', VK_LSHIFT, VK_SPACE);
     Warrior cr(txLoadImage("MRW.bmp"), txLoadImage("MLW.bmp"), txLoadImage("MUpW.bmp"), txLoadImage("MDW.bmp"), txLoadImage("MRA01.bmp"), txLoadImage("MLA01.bmp"), txLoadImage("MUpA01.bmp"), txLoadImage("MDA01.bmp"), txLoadImage("MRH.bmp"), txLoadImage("MLH.bmp"), txLoadImage("MUpH.bmp"), txLoadImage("MDH.bmp"), txLoadImage("MDD.bmp"), 1010, 300, 96, 96, VK_RIGHT, VK_LEFT, VK_UP, VK_DOWN, 'I', 'O');
 menu:
     if(menu() == -1)
@@ -20,20 +20,8 @@ menu:
     wr.clear_deaths();
     cr.clear_deaths();
 nextLevel:
-    if(lvl == 1)
-        level1(mp, wr, cr);
-    if(lvl == 2)
-        level2(mp, wr, cr);
-    if(lvl == 3)
-        level3(mp, wr, cr);
-    if(lvl == 4){
-        txSleep(500);
-        if(wr.get_deaths() > cr.get_deaths())
-            game_over(wr);
-        else
-            game_over(cr);
+    if(level_check(mp, wr, cr, lvl) == 1)
         goto menu;
-    }
     txBegin();
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     while(!GetAsyncKeyState(VK_ESCAPE)){

@@ -3,6 +3,7 @@
 #ifndef __FUNCTIONS_H__
 #define __FUNCTIONS_H__
 
+int level_check(Karta &mp, Warrior &wr, Warrior &cr, int lvl);
 void collision(Karta &mp, Warrior &wr);
 int spikes_check(Karta &mp, Warrior &wr, Warrior &cr);
 int spikes_hurt(Karta &mp, Warrior &wr, Warrior &cr);
@@ -11,6 +12,24 @@ void attack_draw(Karta &mp, Warrior &wr, Warrior &cr);
 void attack_check(Karta &mp, Warrior &wr, Warrior &cr, int i);
 void death(Karta &mp, Warrior &wr, Warrior &cr);
 void game_over(Warrior &wr);
+
+int level_check(Karta &mp, Warrior &wr, Warrior &cr, int lvl){
+    if(lvl == 1)
+        level1(mp, wr, cr);
+    if(lvl == 2)
+        level2(mp, wr, cr);
+    if(lvl == 3)
+        level3(mp, wr, cr);
+    if(lvl == 4){
+        txSleep(500);
+        if(wr.get_deaths() > cr.get_deaths())
+            game_over(wr);
+        else
+            game_over(cr);
+        return 1;
+    }
+    return 0;
+}
 
 void collision(Karta &mp, Warrior &wr){
     if((mp.get_cell(int(wr.get_ycoord() + wr.get_height()/1.25), int(wr.get_xcoord() + wr.get_width()/3)) > 2) && (mp.get_cell(int(wr.get_ycoord() + wr.get_height()/1.25), int(wr.get_xcoord() + wr.get_width()/3)) < 16)){
