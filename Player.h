@@ -140,6 +140,7 @@ public:
     void stop();
     void attack(int i);
     void hurt(int i);
+    void draw_hp();
 
     void warrior_death(int i){
         xScr = wScr * i;
@@ -148,6 +149,7 @@ public:
     }
 
     inline void draw(HDC scr){
+        draw_hp();
         Win32::TransparentBlt(d, int(xD), int(yD), int(w), int(h), scr, int(xScr), int(yScr), int(wScr), int(hScr), bcolor);
     }
 
@@ -170,6 +172,10 @@ public:
     inline void fullhp(){
         nhp = ohp;
         hp = ohp;
+    }
+
+    inline void hp0(){
+        hp = 0;
     }
 
     void reload_changeP(){     // P - Plus
@@ -385,5 +391,20 @@ void Warrior::hurt(int i){
     }
     hurt_hp();
     xScr = 0;
+}
+
+void Warrior::draw_hp(){
+    if(hp == 3){
+        txSetColor(RGB(0, 197, 25), h/30);
+        txLine(xD + w/1.6, yD + h*0.1, xD + w/1.6 + whb, yD + h*0.1);
+    }
+    else if(hp == 2){
+        txSetColor(RGB(251, 105, 25), h/30);
+        txLine(xD + w/1.6, yD + h*0.1, xD + w/1.6 + whb, yD + h*0.1);
+    }
+    else if(hp == 1){
+        txSetColor(RGB(255, 0, 0), h/30);
+        txLine(xD + w/1.6, yD + h*0.1, xD + w/1.6 + whb, yD + h*0.1);
+    }
 }
  #endif
